@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta
+			name="viewport"
+			content="width=device-width, initial-scale=1.0"
+		/>
+		<title>Help</title>
+		<script
+			type="module"
+			src="https://md-block.verou.me/md-block.js"
+		></script>
+        <script>
+            window.onload = function() {
+				// ... ?source=welcome
+
+                // Get the current URL
+                var url = new URL(window.location.href);
+            
+                // Extract the query string part
+                var queryString = url.source;
+            
+                // Select the md-block element
+                var mdBlock = document.querySelector('md-block');
+            
+                // Set the src attribute of the md-block element to the extracted query string
+                mdBlock.setAttribute('src', queryString);
+            }
+            </script>
+	</head>
+	<body>
+		<md-block src="">		
+	</body>
+</html>
