@@ -4,6 +4,7 @@ from render.enemy import Enemy
 from render.stage import LevelManager
 
 import ipywidgets as widgets
+from IPython.display import display
 import random
 
 def show_demo():

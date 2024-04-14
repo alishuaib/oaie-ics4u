@@ -4,10 +4,13 @@ css = """<style>
     background-size: cover;
     width: 100%;
     height: 100%;
+    max-width: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
 }
 .view_box {    
     box-sizing: content-box;
