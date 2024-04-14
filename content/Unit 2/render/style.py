@@ -10,6 +10,7 @@ css = """<style>
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
+    overflow: hidden;
 }
 .parent_bg {
     position: absolute;
