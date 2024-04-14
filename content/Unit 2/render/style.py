@@ -1,7 +1,6 @@
 css = """<style>
 .parent {
-    background-image: url('assets/ui/header/5.png');
-    background-size: cover;
+    position: relative;
     width: 100%;
     height: 100%;
     max-width: 800px;
@@ -11,6 +10,11 @@ css = """<style>
     padding: 20px;
     margin-left: auto;
     margin-right: auto;
+}
+.parent_bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 .view_box {    
     box-sizing: content-box;

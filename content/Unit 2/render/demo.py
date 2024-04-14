@@ -165,7 +165,9 @@ def show_demo():
     view_box = widgets.Box([background,sprite_box]).add_class('view_box')
 
     #Parent box for containing all elements
-    parent = widgets.Box([ui_box,btn_box,view_box]).add_class('parent')
+    parent_bg = widgets.Image(value=open("assets/ui/header/5.png", "rb").read(),format='png').add_class('parent_bg')
+    parent = widgets.Box([parent_bg,ui_box,btn_box,view_box]).add_class('parent')
+    
     display(parent)
 
     print("==== Action Log ====")
