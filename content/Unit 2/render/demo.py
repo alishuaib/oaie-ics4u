@@ -6,10 +6,13 @@ from render.stage import LevelManager
 import ipywidgets as widgets
 from IPython.display import display
 import random
+from render.action_log import log , display_log
 
 def show_demo():
-    #Load CSS Styling
+        #Load CSS Styling
     apply_style()
+
+
     #Level Manager 
     manager = LevelManager()
     background , stage = manager.render()
@@ -33,43 +36,40 @@ def show_demo():
 
     def choice_heal():
         health , health_value = player.hp.health_up(player.hp.max_health // 2)
-        print(f"> Healed for {health_value} health [💖 {health}/{player.hp.max_health}]")
+        log(f"> Healed for {health_value} health [💖 {health}/{player.hp.max_health}]")
 
     def choice_training():
         health,health_value = player.hp.health_down(1+player.atk.current)
         atk,atk_value = player.atk.attack_up(1)
-        print(f"> Spent {health_value} health training [💖 {health}/{player.hp.max_health}]")
-        print(f"> Attack increased by {atk_value} [⚔️ +{atk}]")
+        log(f"> Spent {health_value} health training [💖 {health}/{player.hp.max_health}]")
+        log(f"> Attack increased by {atk_value} [⚔️ +{atk}]")
 
     def choice_chest():
         chance = random.random()
         if 0 <= chance < 0.5:
             health,health_value = player.hp.max_up(5)
-            print(f"> 🎁 Chest had a item!")
-            print(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
+            log(f"> 🎁 Chest had a item!")
+            log(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
         else:
             health,health_value = player.hp.health_down(2)
-            print(f"> 🩹 Chest had a trap! Took {health_value} damage [💖 {health}/{player.hp.max_health}]")
+            log(f"> 🩹 Chest had a trap! Took {health_value} damage [💖 {health}/{player.hp.max_health}]")
 
     def choice_search():
         chance = random.random()
         if 0 <= chance < 0.2: # 20% chance of a trap
             health,health_value = player.hp.health_down(2)
-            print(f"> 🔍 You triggered a trap!")
-            print(f"Took {health_value} damage [💖 {health}/{player.hp.max_health}]")
+            log(f"> 🔍 You triggered a trap!")
+            log(f"Took {health_value} damage [💖 {health}/{player.hp.max_health}]")
         elif 0.2 <= chance < 0.4: # 20% chance of a monster
-            print(f"> 🔍 You ran into a monster!")
+            log(f"> 🔍 You ran into a monster!")
             choice_fight()
         elif 0.4 <= chance < 0.7: # 30% chance of healing
-            print(f"> 🔍 You found a healing potion!")
+            log(f"> 🔍 You found a healing potion!")
             choice_heal()
-        elif 0.7 <= chance < 0.9: # 20% chance of Max Health increase
+        else: # 30% chance of Max Health increase
             health,health_value = player.hp.max_up(5)
-            print(f"> 🔍 You found an item!")
-            print(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
-        else: # 10% chance of shortcut
-            print(f"> 🔍 You found a shortcut! [Skip to next stage]")
-            manager.stage_up()
+            log(f"> 🔍 You found an item!")
+            log(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
 
 
 
@@ -78,7 +78,7 @@ def show_demo():
         enable_fight = True
         enemy_name = random.choice(list(enemy.normal.keys()))
         enemy.new(enemy_name)
-        print(f"> You encountered a {enemy_name}!")
+        log(f"> You encountered a {enemy_name}!")
 
     choices = [
             {
@@ -147,7 +147,7 @@ def show_demo():
                 if choice["label"] == b.description:
                     function = choice["function"]
                     break
-            print(f"{b.description}")
+            log(f"{b.description}")
             function()
 
         next_game_loop()
@@ -163,14 +163,16 @@ def show_demo():
 
     #View box for displaying battle scene
     view_box = widgets.Box([background,sprite_box]).add_class('view_box')
-
+    
     #Parent box for containing all elements
     parent_bg = widgets.Image(value=open("assets/ui/header/5.png", "rb").read(),format='png').add_class('parent_bg')
     parent = widgets.Box([parent_bg,ui_box,btn_box,view_box]).add_class('parent')
-    
-    display(parent)
 
-    print("==== Action Log ====")
+    #Display all elements
+    display(parent)
+    display_log()
+
+    log("== Action Log ==")
 
     # Game Loop
 
@@ -184,13 +186,13 @@ def show_demo():
         elif enemy.hp.current <= 0 and enable_fight:
             if enemy.current == "boss":
                 if manager.level == 4:
-                    print("🏆🏆 Victory 🏆🏆")
+                    log("🏆🏆 Victory 🏆🏆")
                     player.set_state("end_battle")
                     game_state = "win"
             else:
                 health,health_value = player.hp.max_up(2)
-                print(f"> 🔥 You absorb the enemy's power!")
-                print(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
+                log(f"> 🔥 You absorb the enemy's power!")
+                log(f"> Max HP Increased by +{health_value} [💖 {player.hp.current}/{player.hp.max_health}]")
             enable_fight = False
 
         
@@ -207,7 +209,7 @@ def show_demo():
             if not enable_fight and game_state == "play": 
                 manager.on_loop() # Step Up
                 if manager.level >= 4:
-                    print("Stage Boss has Appeared!")
+                    log("Stage Boss has Appeared!")
                     enable_fight = True
                     enemy.new("boss")
 

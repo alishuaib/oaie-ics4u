@@ -2,7 +2,7 @@ from ..enemy import _entity
 from ..cls.stats import Attack, Health
 from ..cls.event import Event
 import ipywidgets as widgets
-
+from render.action_log import log 
 class Enemy:        
     other = {
         "empty": _entity.Empty()
@@ -42,7 +42,7 @@ class Enemy:
         if self.hp.current <= 0: return
         self.event['attack']()
         remaining_hp,amount = player.hp.health_down(self.atk.current)
-        print(f"<< 🔪 Enemy attacked for {amount} [💖 {remaining_hp}/{player.hp.max_health}]")
+        log(f"<< 🔪 Enemy attacked for {amount} [💖 {remaining_hp}/{player.hp.max_health}]")
     
     def new(self,enemy):
         if enemy not in list(self._all_entities.keys()):
@@ -56,7 +56,7 @@ class Enemy:
         #Death Event
         self.hp.event['dead'] = lambda: [
             self.enemy.set_state("dead",repeat=True),
-            print(">> Enemy Defeated")
+            log(">> Enemy Defeated")
         ]
 
         #Attack Event

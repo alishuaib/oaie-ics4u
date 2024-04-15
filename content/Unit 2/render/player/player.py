@@ -1,7 +1,7 @@
 from ..cls.stats import Attack, Health
 from ..cls.entity import Entity
 from ..cls.event import Event
-
+from render.action_log import log
 class Inventory:
     pass
 
@@ -42,8 +42,8 @@ class Player(Entity):
         self.hp.event['dodge_end'] = lambda: self.set_state("idle",repeat=True)
         self.hp.event['dead'] = lambda: [
             self.set_state("dead",repeat=True),
-            print("> 💀 Player has fallen"),
-            print("XX GAME OVER XX")
+            log("> 💀 Player has fallen"),
+            log("XX GAME OVER XX")
         ]
 
         #Define Animation Events for Player
@@ -58,14 +58,14 @@ class Player(Entity):
         if self.hp.current <= 0: return
         self.event['attack']()
         remaining_hp,amount = enemy.hp.health_down(self.atk.current)
-        print(f">> 💥 Player attacked for {amount} [🖤 {remaining_hp}/{enemy.hp.max_health}]")
+        log(f">> 💥 Player attacked for {amount} [🖤 {remaining_hp}/{enemy.hp.max_health}]")
     
     def guard(self):
         """
         Reduce incoming damage by half
         """
         self.hp.guard()
-        print(">> 🛡️ Player is guarding")
+        log(">> 🛡️ Player is guarding")
 
     def dodge(self):
         """
@@ -73,7 +73,7 @@ class Player(Entity):
         50% chance
         """
         self.hp.dodge()
-        print(">> 🦵 Player is preparing to dodge")
+        log(">> 🦵 Player is preparing to dodge")
 
     def new(self):
         self.hp.new(10)
