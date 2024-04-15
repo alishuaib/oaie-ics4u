@@ -1,6 +1,6 @@
 import ipywidgets as widgets
-import threading as th
 from PIL import Image
+import time
 
 def get_total_gif_duration(file_path):
     gif = Image.open(file_path)
@@ -64,25 +64,24 @@ class Entity:
             raise ValueError(f"Invalid state\n{self._states.keys()}")
         
         #Wait for current state animation to finish
-        if self.state_timer and self.state_timer.is_alive():
-            while self.state_timer.is_alive():
-                pass
+        #if self.state_timer and self.state_timer.is_alive():
+        #    while self.state_timer.is_alive():
+        #        pass
 
-
+        # Render new state and animation
         self.current_state = state # Set current state to new state
         self._new_render()
-        if not repeat:
-            self._set_timer(fallback=fallback)
-        if move:
-            self._animate_action(move)
+        if move: 
+            self.container.add_class(f"bounce_{move}")
 
-    def _animate_action(self,move):
-        if self.animate_timer:
-            self.animate_timer.cancel()
-            self.animate_timer = None
-        self.container.add_class(f"bounce_{move}")
-        self.animate_timer = th.Timer(1, self.container.remove_class, args=[f"bounce_{move}"])
-        self.animate_timer.start()
+        # Render fallback state and reset animation
+        if not repeat:
+            time.sleep(self._durations[self.current_state])
+            self._new_render(fallback)
+            self.container.remove_class(f"bounce_{move}")  
+        elif move: 
+            time.sleep(1)
+            self.container.remove_class(f"bounce_{move}")       
         
 
     def render(self):
@@ -93,18 +92,6 @@ class Entity:
         if state:
             self.current_state = state
         self.image.value = open(self._states[self.current_state], "rb").read()
-
-    def _set_timer(self, fallback):
-        #Set a new timer to fallback when current state animation ends
-        if self.state_timer:
-            self.state_timer.cancel()
-            self.state_timer = None
-        self.state_timer = th.Timer(
-            self._durations[self.current_state], 
-            self._new_render,
-            args=[fallback]
-        )
-        self.state_timer.start()
     
     def _get_duration(self):
         for state in self._states:
