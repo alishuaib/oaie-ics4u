@@ -25,14 +25,14 @@ class Player(Entity):
         "attack" : "attack"
     }
     
-    def __init__(self,scale=1):
+    def __init__(self,scale=1,health=10,attack=1):
         super().__init__(scale,) 
         self.event = Event(list(self.EVENT_KEYS.keys()))
         #Define health bar
-        self.hp = Health(max=10)
+        self.hp = Health(max=health)
 
         #Define attack 
-        self.atk = Attack(attack=1)
+        self.atk = Attack(attack=attack)
 
         #Define Animation Events for Health
         # self.hp.event[self.hp.EVENT.health_down] = lambda: self.set_state("crouch",repeat=False,fallback="idle")
