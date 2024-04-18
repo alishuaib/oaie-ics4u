@@ -26,7 +26,7 @@ def show_demo():
     enemy_label = widgets.Label(value='🖤').add_class('ui_label')
     enemy_bar = enemy.hp.render()
 
-    ui_box = widgets.Box([health_label,health_bar,stage,enemy_bar,enemy_label]).add_class('ui_box')
+    ui_box = widgets.Box([health_label,health_bar,stage,enemy_bar,enemy_label]).add_class('header_box')
 
 
     # Buttons

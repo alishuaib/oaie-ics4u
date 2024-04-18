@@ -57,7 +57,7 @@ css = """<style>
     gap: 10px;
     margin: 10px;
 }
-.ui_box {
+.header_box {
     display: flex;
     width: 100%;
     margin: 10px;
