@@ -17,7 +17,7 @@ def show_demo():
     manager = LevelManager()
     background , stage = manager.render()
 
-    player = Player(scale=3)
+    player = Player()
     enemy = Enemy()
 
     #Health / Level UI

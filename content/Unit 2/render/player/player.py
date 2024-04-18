@@ -25,7 +25,7 @@ class Player(Entity):
         "attack" : "attack"
     }
     
-    def __init__(self,scale=1,health=10,attack=1):
+    def __init__(self,scale=3,health=10,attack=1):
         super().__init__(scale,) 
         self.event = Event(list(self.EVENT_KEYS.keys()))
         #Define health bar
