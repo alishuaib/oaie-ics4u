@@ -26,6 +26,7 @@ class LevelManager:
        
         def set_index(self, i):
             self.container.selected_index = i
+            self.step_label.value = "Stage: "+str(self.container.selected_index+1)
 
         def render(self):            
             self.step_label.value = "Stage: "+str(self.container.selected_index+1)

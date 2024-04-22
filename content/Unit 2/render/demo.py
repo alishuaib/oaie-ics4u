@@ -1,3 +1,4 @@
+import render
 from render.style import apply_style
 from render.player import Player
 from render.enemy import Enemy
@@ -15,15 +16,16 @@ def show_demo():
 
     #Level Manager 
     manager = LevelManager()
-    background , stage = manager.render()
+    background = manager.stage.render()
+    stage = manager.meter.render()
 
     player = Player()
     enemy = Enemy()
 
     #Health / Level UI
-    health_label = widgets.Label(value='💖').add_class('ui_label')
+    health_label = render.Label(value='💖')
     health_bar = player.hp.render()
-    enemy_label = widgets.Label(value='🖤').add_class('ui_label')
+    enemy_label = render.Label(value='🖤')
     enemy_bar = enemy.hp.render()
 
     ui_box = widgets.Box([health_label,health_bar,stage,enemy_bar,enemy_label]).add_class('header_box')
@@ -165,8 +167,8 @@ def show_demo():
     view_box = widgets.Box([background,sprite_box]).add_class('view_box')
     
     #Parent box for containing all elements
-    parent_bg = widgets.Image(value=open("assets/ui/header/5.png", "rb").read(),format='png').add_class('parent_bg')
-    parent = widgets.Box([parent_bg,ui_box,btn_box,view_box]).add_class('parent')
+    
+    parent = widgets.Box([render.BACKGROUND,ui_box,btn_box,view_box]).add_class('parent')
 
     #Display all elements
     display(parent)
